@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Porsche 911 — Timeless Performance</title>
+    <meta
+      name="description"
+      content="A premium cinematic Three.js concept experience for the Porsche 911."
+    />
+    <meta name="theme-color" content="#090a0e" />
+    <link rel="preconnect" href="https://unpkg.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700&family=Prata&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div id="loader" class="loader" aria-live="polite">
+      <div class="loader__mark">911</div>
+      <p>Preparing the showroom experience…</p>
+    </div>
+
+    <header class="topbar">
+      <span class="brand">Porsche 911</span>
+      <a href="#final-cta" class="topbar__link">Experience the Icon</a>
+    </header>
+
+    <main>
+      <section id="hero" class="section section--hero">
+        <canvas id="scene" aria-label="3D Porsche 911 showroom"></canvas>
+        <div class="hero__overlay"></div>
+        <div class="hero__content container">
+          <p class="eyebrow">Since 1963</p>
+          <h1>Porsche 911 — Timeless Performance</h1>
+          <p class="subtitle">
+            A silhouette shaped by decades of precision engineering, emotion, and speed.
+          </p>
+          <div class="hero__actions">
+            <a class="btn btn--solid" href="#design">Explore the Model</a>
+            <a class="btn btn--ghost" href="#performance">Discover Performance</a>
+          </div>
+        </div>
+      </section>
+
+      <section id="about" class="section section--split reveal">
+        <div class="container split">
+          <article>
+            <p class="eyebrow">Legacy</p>
+            <h2>An icon that evolves without losing its soul.</h2>
+            <p>
+              The Porsche 911 is a rare expression of continuity in motion—where heritage and
+              innovation accelerate together. Every generation refines the same unmistakable form,
+              preserving its spirit while advancing craftsmanship, dynamics, and driver connection.
+            </p>
+          </article>
+          <aside class="detail-card">
+            <h3>Design DNA</h3>
+            <p>Rear-engine character, fastback profile, and a cockpit engineered around the driver.</p>
+          </aside>
+        </div>
+      </section>
+
+      <section id="design" class="section reveal">
+        <div class="container">
+          <p class="eyebrow">Design Highlights</p>
+          <h2>Every surface is sculpted for elegance and intent.</h2>
+          <div class="cards">
+            <article class="feature" data-focus="front">
+              <h3>Signature Lighting</h3>
+              <p>Distinctive LED architecture creates a precise, unmistakable identity.</p>
+            </article>
+            <article class="feature" data-focus="side">
+              <h3>Iconic Silhouette</h3>
+              <p>A flowing roofline and muscular shoulders—timeless in proportion.</p>
+            </article>
+            <article class="feature" data-focus="rear">
+              <h3>Athletic Rear Stance</h3>
+              <p>Wide posture, clean aerodynamics, and purpose in every curve.</p>
+            </article>
+            <article class="feature" data-focus="cockpit">
+              <h3>Crafted Interior</h3>
+              <p>Driver-focused ergonomics wrapped in contemporary luxury materials.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="performance" class="section section--performance reveal">
+        <div class="container">
+          <p class="eyebrow">Performance</p>
+          <h2>Engineered to transform numbers into sensation.</h2>
+          <div class="stats">
+            <article class="stat">
+              <span class="stat__value" data-target="3.4">0.0</span>
+              <span class="stat__label">0–60 mph (s)</span>
+            </article>
+            <article class="stat">
+              <span class="stat__value" data-target="379">0</span>
+              <span class="stat__label">Horsepower</span>
+            </article>
+            <article class="stat">
+              <span class="stat__value" data-target="182">0</span>
+              <span class="stat__label">Top Speed (mph)</span>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="gallery" class="section section--gallery reveal">
+        <div class="container">
+          <p class="eyebrow">Immersive Detail</p>
+          <h2>Material, light, and motion—refined to the smallest gesture.</h2>
+        </div>
+        <div class="gallery-panels">
+          <div class="panel panel--one"><span>Precision surfaces</span></div>
+          <div class="panel panel--two"><span>Motorsport heritage</span></div>
+          <div class="panel panel--three"><span>Modern craftsmanship</span></div>
+        </div>
+      </section>
+
+      <section id="final-cta" class="section section--cta reveal">
+        <div class="container">
+          <h2>Experience the Icon.</h2>
+          <p>The Porsche 911 remains a benchmark of performance, restraint, and timeless design.</p>
+          <a class="btn btn--solid" href="#hero">Return to Showroom</a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>Concept experience • Porsche 911 • Luxury product storytelling</p>
+    </footer>
+
+    <script type="module" src="script.js"></script>
+  </body>
+</html>
