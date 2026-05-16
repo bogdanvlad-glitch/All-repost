@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Site une page</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      height: 100vh;
+      overflow: hidden;
+      color: white;
+    }
+
+    .video-background {
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      overflow: hidden;
+      background: #000;
+    }
+
+    .video-background iframe {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 120vw;
+      height: 120vh;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.45);
+      z-index: -1;
+    }
+
+    .content {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 24px;
+    }
+
+    h1 {
+      font-size: clamp(3rem, 8vw, 7rem);
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: clamp(1rem, 2vw, 1.4rem);
+      max-width: 700px;
+      line-height: 1.6;
+      margin-bottom: 32px;
+    }
+
+    a {
+      display: inline-block;
+      padding: 14px 32px;
+      border: 2px solid white;
+      color: white;
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      transition: 0.3s ease;
+    }
+
+    a:hover {
+      background: white;
+      color: black;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="video-background">
+    <iframe
+      src="https://www.youtube.com/embed/QYU8zydUqD8?autoplay=1&mute=1&controls=0&loop=1&playlist=QYU8zydUqD8&modestbranding=1&showinfo=0&rel=0"
+      frameborder="0"
+      allow="autoplay; fullscreen"
+      allowfullscreen>
+    </iframe>
+  </div>
+
+  <div class="overlay"></div>
+
+  <main class="content">
+    <h1>Bienvenue</h1>
+    <p>
+      Un site web en une page avec une vidéo YouTube en fond d’écran,
+      un style immersif et un bouton d’appel à l’action.
+    </p>
+    <a href="#">Découvrir</a>
+  </main>
+</body>
+</html>
