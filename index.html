@@ -3,325 +3,611 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Site une page animé</title>
-
+  <title>CreationWeb — Studio web en Belgique</title>
+  <meta name="description" content="CreationWeb, studio web basé en Belgique : création de sites vitrines, landing pages, logos, UI/UX, maquettes Figma et accompagnement à la mise en ligne." />
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+    :root {
+      --bg: #050505;
+      --text: #ffffff;
+      --muted: rgba(255,255,255,.72);
+      --line: rgba(255,255,255,.18);
+      --card: rgba(0,0,0,.48);
+      --card2: rgba(255,255,255,.08);
+      --accent: #d7ff4f;
+      --accent2: #7cf7ff;
+      --radius: 26px;
     }
 
-    html {
-      scroll-behavior: smooth;
-    }
-
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
     body {
-      font-family: Arial, sans-serif;
-      color: white;
-      background: #000;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, Arial, Helvetica, sans-serif;
       overflow-x: hidden;
     }
 
-    .video-background {
+    .video-bg {
       position: fixed;
       inset: 0;
-      z-index: -3;
-      overflow: hidden;
+      z-index: -4;
       background: #000;
+      overflow: hidden;
     }
 
-    .video-background iframe {
+    .video-bg iframe {
       position: absolute;
       top: 50%;
       left: 50%;
-      width: 120vw;
-      height: 120vh;
+      width: 130vw;
+      height: 130vh;
       transform: translate(-50%, -50%);
       pointer-events: none;
+      opacity: .7;
+      transition: opacity .45s ease;
     }
 
-    .overlay {
+    .shadow-layer {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.55);
-      z-index: -2;
-    }
-
-    .gradient {
-      position: fixed;
-      inset: 0;
+      z-index: -3;
       background:
-        radial-gradient(circle at top, rgba(255,255,255,0.15), transparent 35%),
-        linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.85));
-      z-index: -1;
+        radial-gradient(circle at 20% 10%, rgba(215,255,79,.18), transparent 26%),
+        radial-gradient(circle at 80% 30%, rgba(124,247,255,.14), transparent 30%),
+        linear-gradient(135deg, rgba(0,0,0,.48), rgba(0,0,0,.86));
       pointer-events: none;
     }
 
-    nav {
+    .noise {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      padding: 22px 8%;
+      inset: 0;
+      z-index: -2;
+      pointer-events: none;
+      opacity: .18;
+      background-image: linear-gradient(rgba(255,255,255,.08) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent);
+    }
+
+    header {
+      position: fixed;
+      z-index: 50;
+      inset: 0 0 auto 0;
+      padding: 18px 6vw;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      z-index: 10;
-      background: linear-gradient(to bottom, rgba(0,0,0,0.55), transparent);
+      gap: 24px;
+      background: linear-gradient(to bottom, rgba(0,0,0,.76), rgba(0,0,0,.18), transparent);
+      backdrop-filter: blur(10px);
     }
 
-    nav .logo {
-      font-weight: bold;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-    }
-
-    nav a {
-      color: white;
-      text-decoration: none;
-      margin-left: 24px;
-      font-size: 0.9rem;
-      opacity: 0.85;
-    }
-
-    nav a:hover {
-      opacity: 1;
-    }
-
-    section {
-      min-height: 100vh;
-      padding: 120px 8%;
+    .brand {
       display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: white;
+      font-weight: 900;
+      letter-spacing: -.04em;
+      font-size: 1.1rem;
+    }
+
+    .mark {
+      width: 36px;
+      height: 36px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      color: #000;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      box-shadow: 0 0 34px rgba(215,255,79,.25);
+    }
+
+    nav {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    nav button, .ghost-button, .main-button {
+      border: 1px solid var(--line);
+      color: white;
+      background: rgba(255,255,255,.06);
+      padding: 11px 15px;
+      border-radius: 999px;
+      cursor: pointer;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: .88rem;
+      transition: .25s ease;
+    }
+
+    nav button:hover, nav button.active, .ghost-button:hover {
+      border-color: rgba(215,255,79,.75);
+      background: rgba(215,255,79,.14);
+    }
+
+    .main-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #050505;
+      border: 0;
+      box-shadow: 0 16px 50px rgba(124,247,255,.18);
+    }
+
+    .page {
+      display: none;
+      min-height: 100vh;
+      padding: 138px 6vw 70px;
+      animation: reveal .55s ease both;
+    }
+
+    .page.active { display: block; }
+
+    @keyframes reveal {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-grid {
+      min-height: calc(100vh - 210px);
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 44px;
       align-items: center;
     }
 
-    .hero {
-      justify-content: center;
-      text-align: center;
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(0,0,0,.32);
+      color: var(--muted);
+      margin-bottom: 20px;
     }
 
-    .hero-content {
-      max-width: 900px;
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 16px var(--accent);
     }
 
     h1 {
-      font-size: clamp(3rem, 8vw, 7rem);
+      font-size: clamp(3.3rem, 9vw, 9.4rem);
+      line-height: .86;
+      letter-spacing: -.08em;
       text-transform: uppercase;
-      letter-spacing: 5px;
-      margin-bottom: 24px;
+      margin-bottom: 22px;
     }
 
     h2 {
-      font-size: clamp(2rem, 5vw, 4.5rem);
+      font-size: clamp(2.2rem, 5vw, 5.3rem);
+      line-height: .9;
+      letter-spacing: -.07em;
       text-transform: uppercase;
-      letter-spacing: 3px;
-      margin-bottom: 24px;
+      margin-bottom: 22px;
     }
 
-    p {
-      font-size: clamp(1rem, 2vw, 1.25rem);
-      line-height: 1.7;
-      max-width: 760px;
-      opacity: 0.9;
+    h3 { font-size: 1.25rem; margin-bottom: 12px; }
+    p { color: var(--muted); line-height: 1.72; font-size: 1.04rem; }
+    .lead { max-width: 780px; font-size: clamp(1.08rem, 2vw, 1.34rem); }
+
+    .actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 30px; }
+
+    .glass {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: clamp(24px, 4vw, 48px);
+      backdrop-filter: blur(16px);
+      box-shadow: 0 24px 80px rgba(0,0,0,.22);
     }
 
-    .button {
-      display: inline-block;
-      margin-top: 34px;
-      padding: 14px 34px;
-      border: 2px solid white;
-      color: white;
-      text-decoration: none;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      transition: 0.3s ease;
-    }
-
-    .button:hover {
-      background: white;
-      color: black;
-    }
-
-    .info-block {
-      max-width: 900px;
-      padding: 40px;
-      border: 1px solid rgba(255,255,255,0.25);
-      background: rgba(0,0,0,0.35);
-      backdrop-filter: blur(8px);
-      border-radius: 24px;
-    }
-
-    .right {
-      justify-content: flex-end;
-      text-align: right;
-    }
-
-    .center {
-      justify-content: center;
-      text-align: center;
-    }
-
-    .cards {
+    .stats {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
-      margin-top: 40px;
+      gap: 14px;
+      margin-top: 26px;
     }
 
-    .card {
-      padding: 28px;
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.2);
+    .stat, .card, .price, .project, .faq-item, .legal-box {
+      background: var(--card2);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 24px;
+      backdrop-filter: blur(12px);
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 2rem;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 28px; }
+    .grid.two { grid-template-columns: repeat(2, 1fr); }
+    .grid.four { grid-template-columns: repeat(4, 1fr); }
+
+    ul { list-style: none; display: grid; gap: 10px; margin-top: 14px; color: var(--muted); line-height: 1.55; }
+    li::before { content: "•"; color: var(--accent); margin-right: 9px; }
+
+    .price strong { font-size: 2rem; color: var(--accent); display: block; margin: 12px 0; }
+    .badge { display: inline-block; padding: 6px 10px; border-radius: 999px; background: rgba(215,255,79,.14); border: 1px solid rgba(215,255,79,.35); color: white; font-size: .82rem; margin-bottom: 12px; }
+
+    .project .mockup {
+      height: 180px;
       border-radius: 18px;
-      backdrop-filter: blur(6px);
+      margin-bottom: 18px;
+      background:
+        linear-gradient(135deg, rgba(215,255,79,.2), rgba(124,247,255,.17)),
+        linear-gradient(45deg, rgba(255,255,255,.1) 25%, transparent 25%, transparent 50%, rgba(255,255,255,.1) 50%, rgba(255,255,255,.1) 75%, transparent 75%);
+      background-size: auto, 34px 34px;
+      border: 1px solid var(--line);
     }
 
-    .card h3 {
-      margin-bottom: 14px;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-    }
+    .timeline { display: grid; gap: 16px; margin-top: 26px; }
+    .step { display: grid; grid-template-columns: 64px 1fr; gap: 18px; align-items: start; }
+    .num { width: 52px; height: 52px; border-radius: 18px; background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #000; display: grid; place-items: center; font-weight: 900; }
 
-    .card p {
-      font-size: 0.95rem;
-      line-height: 1.5;
+    form { display: grid; gap: 12px; margin-top: 24px; }
+    input, select, textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      color: white;
+      background: rgba(0,0,0,.45);
+      border-radius: 16px;
+      padding: 14px 16px;
+      font: inherit;
+      outline: none;
     }
+    textarea { min-height: 140px; resize: vertical; }
+    input:focus, select:focus, textarea:focus { border-color: rgba(215,255,79,.75); }
 
     footer {
-      padding: 40px 8%;
-      text-align: center;
-      background: rgba(0,0,0,0.65);
-      color: rgba(255,255,255,0.75);
+      padding: 28px 6vw 50px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      background: rgba(0,0,0,.65);
+      border-top: 1px solid var(--line);
+    }
+    footer button { color: rgba(255,255,255,.72); background: transparent; border: 0; cursor: pointer; padding: 8px 10px; }
+    footer button:hover { color: white; }
+
+    .credit {
+      position: fixed;
+      right: 14px;
+      bottom: 12px;
+      z-index: 60;
+      font-size: .72rem;
+      color: rgba(255,255,255,.48);
+      background: rgba(0,0,0,.35);
+      border: 1px solid rgba(255,255,255,.12);
+      padding: 7px 10px;
+      border-radius: 999px;
+      backdrop-filter: blur(8px);
     }
 
-    @media (max-width: 800px) {
-      nav {
-        padding: 18px 6%;
-      }
-
-      nav .links {
-        display: none;
-      }
-
-      section {
-        padding: 100px 6%;
-      }
-
-      .right {
-        justify-content: center;
-        text-align: left;
-      }
-
-      .cards {
-        grid-template-columns: 1fr;
-      }
-
-      .info-block {
-        padding: 28px;
-      }
+    @media (max-width: 920px) {
+      header { align-items: flex-start; flex-direction: column; padding: 14px 5vw; }
+      nav { justify-content: flex-start; max-height: 128px; overflow: auto; }
+      .page { padding: 190px 5vw 56px; }
+      .hero-grid, .grid, .grid.two, .grid.four, .stats { grid-template-columns: 1fr; }
+      .video-bg iframe { width: 180vw; height: 150vh; }
+      h1 { font-size: clamp(3.1rem, 17vw, 6rem); }
+      .credit { display: none; }
     }
   </style>
 </head>
-
 <body>
-  <div class="video-background">
-    <iframe
-      src="https://www.youtube.com/embed/QYU8zydUqD8?autoplay=1&mute=1&controls=0&loop=1&playlist=QYU8zydUqD8&modestbranding=1&showinfo=0&rel=0"
-      frameborder="0"
-      allow="autoplay; fullscreen"
-      allowfullscreen>
-    </iframe>
+  <div class="video-bg" aria-hidden="true">
+    <iframe id="yt-bg" src="" title="Fond vidéo" frameborder="0" allow="autoplay; encrypted-media; fullscreen" allowfullscreen></iframe>
   </div>
+  <div class="shadow-layer"></div>
+  <div class="noise"></div>
 
-  <div class="overlay"></div>
-  <div class="gradient"></div>
+  <header>
+    <a class="brand" href="#accueil" data-page-link="accueil"><span class="mark">CW</span><span>CreationWeb</span></a>
+    <nav aria-label="Navigation principale">
+      <button data-page-link="accueil">Accueil</button>
+      <button data-page-link="services">Services</button>
+      <button data-page-link="realisations">Réalisations</button>
+      <button data-page-link="apropos">À propos</button>
+      <button data-page-link="tarifs">Tarifs</button>
+      <button data-page-link="faq">FAQ</button>
+      <button data-page-link="contact">Contact</button>
+    </nav>
+  </header>
 
-  <nav>
-    <div class="logo">Mon Site</div>
-    <div class="links">
-      <a href="#intro">Accueil</a>
-      <a href="#infos">Infos</a>
-      <a href="#details">Détails</a>
-      <a href="#contact">Contact</a>
-    </div>
-  </nav>
-
-  <section class="hero" id="intro">
-    <div class="hero-content">
-      <h1>Bienvenue</h1>
-      <p>
-        Un site web immersif en une page, avec une vidéo animée en fond
-        et du contenu qui apparaît au fur et à mesure du scroll.
-      </p>
-      <a href="#infos" class="button">Voir plus</a>
-    </div>
-  </section>
-
-  <section id="infos">
-    <div class="info-block">
-      <h2>Une ambiance animée</h2>
-      <p>
-        Le fond reste animé pendant toute la navigation. Cela donne un effet
-        cinématique et moderne, idéal pour une page de présentation, un portfolio,
-        une page d’événement ou un projet créatif.
-      </p>
-    </div>
-  </section>
-
-  <section class="right" id="details">
-    <div class="info-block">
-      <h2>Plus d’informations</h2>
-      <p>
-        Tu peux ajouter ici une description de ton projet, ton histoire,
-        tes objectifs ou les services que tu proposes. Chaque bloc garde
-        un style transparent pour laisser visible l’animation en arrière-plan.
-      </p>
-    </div>
-  </section>
-
-  <section class="center">
-    <div>
-      <h2>Points forts</h2>
-
-      <div class="cards">
-        <div class="card">
-          <h3>Design</h3>
-          <p>
-            Une interface sombre, moderne et lisible avec un fond vidéo dynamique.
-          </p>
+  <main>
+    <section class="page active" id="accueil" data-video="ZGA_ygskos0" data-credit="MoreMotion — Abstract Matrix Rotating">
+      <div class="hero-grid">
+        <div>
+          <div class="eyebrow"><span class="dot"></span> Studio web basé en Belgique</div>
+          <h1>Sites web modernes pour marques claires.</h1>
+          <p class="lead">CreationWeb crée des sites vitrines, landing pages, logos et interfaces modernes pour indépendants, petites entreprises et projets personnels.</p>
+          <div class="actions">
+            <a class="main-button" href="#contact" data-page-link="contact">Demander un devis →</a>
+            <a class="ghost-button" href="#realisations" data-page-link="realisations">Voir le portfolio</a>
+          </div>
         </div>
-
-        <div class="card">
-          <h3>Simple</h3>
-          <p>
-            Tout tient dans un seul fichier HTML, facile à modifier et à publier.
-          </p>
-        </div>
-
-        <div class="card">
-          <h3>Immersif</h3>
-          <p>
-            Le même fond animé reste présent pendant tout le scroll de la page.
-          </p>
+        <div class="glass">
+          <h3>Ce que le site apporte</h3>
+          <p>Une image plus professionnelle, une structure claire, un design responsive, des appels à l’action visibles et un message facile à comprendre.</p>
+          <div class="stats">
+            <div class="stat"><strong>24h</strong><p>réponse visée</p></div>
+            <div class="stat"><strong>100%</strong><p>responsive</p></div>
+            <div class="stat"><strong>BE</strong><p>basé en Belgique</p></div>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="center" id="contact">
-    <div class="info-block">
-      <h2>Contact</h2>
-      <p>
-        Ajoute ici tes réseaux sociaux, ton adresse mail ou un bouton pour
-        rediriger les visiteurs vers une autre page.
-      </p>
-      <a href="mailto:exemple@email.com" class="button">Me contacter</a>
-    </div>
-  </section>
+    <section class="page" id="services" data-video="8ez3op0wYko" data-credit="MoreMotion — Abstract VJ Rhombus">
+      <div class="glass">
+        <div class="eyebrow"><span class="dot"></span> Services détaillés</div>
+        <h2>Sites, logos et expériences digitales.</h2>
+        <p class="lead">Chaque service est pensé pour livrer quelque chose de concret, propre et directement utilisable.</p>
+        <div class="grid">
+          <article class="card">
+            <h3>Sites web</h3>
+            <p>Sites vitrines, landing pages, pages rapides et adaptées mobile/tablette/ordinateur.</p>
+            <ul>
+              <li>Formulaire de contact</li>
+              <li>SEO de base</li>
+              <li>Mise en ligne accompagnée</li>
+              <li>Maintenance possible</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>Logos</h3>
+            <p>Identité claire avec fichiers prêts à utiliser sur web, réseaux et documents.</p>
+            <ul>
+              <li>Logo principal</li>
+              <li>Variantes claire/sombre</li>
+              <li>Palette et typographies</li>
+              <li>PNG, SVG, PDF</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>UI/UX</h3>
+            <p>Structure et maquettes pour rendre le site lisible, crédible et agréable.</p>
+            <ul>
+              <li>Wireframes</li>
+              <li>Maquettes Figma</li>
+              <li>Prototype cliquable</li>
+              <li>Amélioration d’un site existant</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="page" id="realisations" data-video="ldtjIq_RwMg" data-credit="THX Ltd — Genesis">
+      <div class="glass">
+        <div class="eyebrow"><span class="dot"></span> Portfolio</div>
+        <h2>Réalisations et concepts.</h2>
+        <p class="lead">Même les projets fictifs ou personnels peuvent être présentés sérieusement avec un objectif, une solution et des livrables.</p>
+        <div class="grid">
+          <article class="project">
+            <div class="mockup"></div>
+            <span class="badge">Concept — Restaurant local</span>
+            <h3>Landing page réservation</h3>
+            <p>Page moderne pour présenter le menu, les horaires et faciliter les réservations.</p>
+          </article>
+          <article class="project">
+            <div class="mockup"></div>
+            <span class="badge">Concept — Coach sportif</span>
+            <h3>Site vitrine premium</h3>
+            <p>Structure claire, boutons visibles et formulaire pour transformer les visiteurs en prospects.</p>
+          </article>
+          <article class="project">
+            <div class="mockup"></div>
+            <span class="badge">Concept — Marque perso</span>
+            <h3>Identité visuelle</h3>
+            <p>Logo, palette, typographies et mini charte graphique pour une présence cohérente.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="page" id="apropos" data-video="mk2l2j8brJQ" data-credit="THX Ltd — Wings">
+      <div class="glass">
+        <div class="eyebrow"><span class="dot"></span> À propos</div>
+        <h2>Un studio humain, clair et direct.</h2>
+        <div class="grid two">
+          <div>
+            <p>CreationWeb est un studio web basé en Belgique, spécialisé dans la création de sites vitrines, logos et interfaces modernes pour indépendants, petites entreprises et projets personnels.</p>
+            <br>
+            <p>Le projet peut être porté par un fondateur, un étudiant, un freelance ou une petite équipe. Remplace ce texte par ta vraie présentation : qui tu es, depuis quand tu codes, ce que tu as déjà créé et ta façon de travailler.</p>
+          </div>
+          <div class="card">
+            <h3>Façon de travailler</h3>
+            <ul>
+              <li>Échange simple pour comprendre le besoin</li>
+              <li>Proposition claire avant lancement</li>
+              <li>Design responsive et moderne</li>
+              <li>Livraison avec explication</li>
+              <li>Accompagnement jusqu’à la mise en ligne</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="page" id="tarifs" data-video="0r4N0E3pmIM" data-credit="THX Ltd — Amazing Life">
+      <div class="glass">
+        <div class="eyebrow"><span class="dot"></span> Tarifs indicatifs</div>
+        <h2>Des formules simples.</h2>
+        <p class="lead">Chaque projet est différent. Les prix sont adaptés selon le nombre de pages, le niveau de design, les fonctionnalités et les délais.</p>
+        <div class="grid">
+          <article class="price">
+            <span class="badge">Starter</span>
+            <h3>Indépendant / petit projet</h3>
+            <strong>à partir de 250 €</strong>
+            <p>1 page responsive, sections essentielles et formulaire de contact.</p>
+          </article>
+          <article class="price">
+            <span class="badge">Pro</span>
+            <h3>Entreprise locale</h3>
+            <strong>à partir de 600 €</strong>
+            <p>3 à 5 pages, design personnalisé, contenu structuré et mise en ligne accompagnée.</p>
+          </article>
+          <article class="price">
+            <span class="badge">Premium</span>
+            <h3>Marque ambitieuse</h3>
+            <strong>sur devis</strong>
+            <p>Site complet, identité visuelle, maquettes, optimisation et accompagnement avancé.</p>
+          </article>
+        </div>
+        <div class="timeline">
+          <div class="step"><div class="num">1</div><div><h3>Premier contact</h3><p>Le client explique son besoin, son activité, ses objectifs et son budget.</p></div></div>
+          <div class="step"><div class="num">2</div><div><h3>Proposition</h3><p>Prix, délais et livrables sont posés clairement avant de commencer.</p></div></div>
+          <div class="step"><div class="num">3</div><div><h3>Design et développement</h3><p>Structure, couleurs, sections, animations et intégration responsive.</p></div></div>
+          <div class="step"><div class="num">4</div><div><h3>Livraison</h3><p>Fichiers livrés, aide à la mise en ligne et explication du fonctionnement.</p></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="page" id="faq" data-video="QYU8zydUqD8" data-credit="Vidéo YouTube fournie par l’utilisateur">
+      <div class="glass">
+        <div class="eyebrow"><span class="dot"></span> FAQ</div>
+        <h2>Questions fréquentes.</h2>
+        <div class="grid two">
+          <article class="faq-item"><h3>Combien coûte un site web ?</h3><p>Le prix dépend du nombre de pages, du design et des fonctionnalités. Une landing page commence à partir de 250 €.</p></article>
+          <article class="faq-item"><h3>Est-ce que le site sera adapté au mobile ?</h3><p>Oui, chaque site est pensé pour ordinateur, tablette et mobile.</p></article>
+          <article class="faq-item"><h3>Est-ce que CreationWeb crée aussi les logos ?</h3><p>Oui, l’identité peut inclure logo, couleurs, typographies et fichiers sources selon l’offre.</p></article>
+          <article class="faq-item"><h3>Quels sont les délais ?</h3><p>Logo simple : 3 à 7 jours. Landing page : 1 à 2 semaines. Site vitrine : 2 à 4 semaines.</p></article>
+          <article class="faq-item"><h3>Puis-je modifier le site après livraison ?</h3><p>Oui, selon la solution choisie. Une maintenance peut aussi être proposée.</p></article>
+          <article class="faq-item"><h3>La mise en ligne est-elle incluse ?</h3><p>L’accompagnement à la mise en ligne peut être inclus dans la formule ou ajouté au devis.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="page" id="contact" data-video="5O32AYJnEB0" data-credit="Motion background — vidéo YouTube de fond">
+      <div class="glass">
+        <div class="eyebrow"><span class="dot"></span> Contact et brief</div>
+        <h2>Décris ton projet.</h2>
+        <div class="grid two">
+          <div>
+            <p>Email : <strong>contact.creationweb@gmail.com</strong></p>
+            <p>Localisation : Belgique</p>
+            <p>Réponse : généralement sous 24h</p>
+            <br>
+            <p>Le formulaire ci-dessous est visuel. Pour qu’il envoie vraiment les messages, il faudra le connecter à Formspree, Netlify Forms, EmailJS ou un backend.</p>
+          </div>
+          <form action="mailto:contact.creationweb@gmail.com" method="post" enctype="text/plain">
+            <input name="nom" placeholder="Nom" required>
+            <input type="email" name="email" placeholder="Email" required>
+            <input name="entreprise" placeholder="Entreprise / projet">
+            <select name="service">
+              <option>Service souhaité</option>
+              <option>Site web</option>
+              <option>Logo</option>
+              <option>UI/UX</option>
+              <option>Site + identité visuelle</option>
+            </select>
+            <select name="budget">
+              <option>Budget approximatif</option>
+              <option>250 € - 600 €</option>
+              <option>600 € - 1200 €</option>
+              <option>1200 € +</option>
+              <option>Je ne sais pas encore</option>
+            </select>
+            <input name="delai" placeholder="Délai souhaité">
+            <textarea name="description" placeholder="Description du projet, objectif principal, exemples de sites aimés..."></textarea>
+            <button class="main-button" type="submit">Envoyer le brief →</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <section class="page" id="mentions" data-video="ZGA_ygskos0" data-credit="MoreMotion — Abstract Matrix Rotating">
+      <div class="glass legal-box">
+        <h2>Mentions légales</h2>
+        <p>Responsable du site : CreationWeb. Pays : Belgique. Email : contact.creationweb@gmail.com.</p>
+        <p>Hébergeur : à compléter selon la plateforme utilisée. Le contenu, les textes, le design et les éléments graphiques du site appartiennent à CreationWeb sauf mention contraire.</p>
+      </div>
+    </section>
+
+    <section class="page" id="confidentialite" data-video="8ez3op0wYko" data-credit="MoreMotion — Abstract VJ Rhombus">
+      <div class="glass legal-box">
+        <h2>Politique de confidentialité</h2>
+        <p>Les données envoyées via le formulaire servent uniquement à répondre aux demandes de contact et à préparer une proposition. Elles peuvent inclure nom, email, projet, budget et délai.</p>
+        <p>Tu peux demander la suppression de tes données par email à contact.creationweb@gmail.com. Les données ne sont pas revendues.</p>
+      </div>
+    </section>
+
+    <section class="page" id="conditions" data-video="ldtjIq_RwMg" data-credit="THX Ltd — Genesis">
+      <div class="glass legal-box">
+        <h2>Conditions de service</h2>
+        <p>Un acompte peut être demandé avant le début du projet. Les modifications sont incluses dans la limite définie dans le devis. Les délais dépendent de la réactivité, du nombre de pages, du contenu fourni et des fonctionnalités demandées.</p>
+        <p>La livraison finale peut inclure les fichiers, l’accompagnement à la mise en ligne et les éléments graphiques prévus dans l’offre.</p>
+      </div>
+    </section>
+  </main>
 
   <footer>
-    © 2026 — Site une page avec fond animé
+    <button data-page-link="mentions">Mentions légales</button>
+    <button data-page-link="confidentialite">Politique de confidentialité</button>
+    <button data-page-link="conditions">Conditions de service</button>
+    <button data-page-link="contact">Email</button>
+    <span style="color:rgba(255,255,255,.45);padding:8px 10px;">© 2026 — CreationWeb</span>
   </footer>
+
+  <div class="credit" id="video-credit"></div>
+
+  <script>
+    const pages = [...document.querySelectorAll('.page')];
+    const links = [...document.querySelectorAll('[data-page-link]')];
+    const iframe = document.getElementById('yt-bg');
+    const credit = document.getElementById('video-credit');
+
+    function youtubeEmbed(id) {
+      return `https://www.youtube.com/embed/${id}?autoplay=1&mute=1&controls=0&loop=1&playlist=${id}&modestbranding=1&rel=0&showinfo=0&playsinline=1`;
+    }
+
+    function showPage(id) {
+      const page = document.getElementById(id) || document.getElementById('accueil');
+      pages.forEach(p => p.classList.toggle('active', p === page));
+      links.forEach(l => l.classList.toggle('active', l.dataset.pageLink === page.id));
+
+      const videoId = page.dataset.video;
+      const nextSrc = youtubeEmbed(videoId);
+      if (iframe.src !== nextSrc) {
+        iframe.style.opacity = '0';
+        setTimeout(() => {
+          iframe.src = nextSrc;
+          iframe.style.opacity = '.7';
+        }, 180);
+      }
+
+      credit.textContent = page.dataset.credit || '';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      history.replaceState(null, '', '#' + page.id);
+    }
+
+    links.forEach(link => {
+      link.addEventListener('click', e => {
+        e.preventDefault();
+        showPage(link.dataset.pageLink);
+      });
+    });
+
+    window.addEventListener('hashchange', () => showPage(location.hash.replace('#', '') || 'accueil'));
+    showPage(location.hash.replace('#', '') || 'accueil');
+  </script>
 </body>
 </html>
